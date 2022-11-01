@@ -3,7 +3,7 @@ class Magazine
 
   @@all = []
 
-  def initialize(name, category)
+  def initialize(name:, category:)
     @name = name
     @category = category
     @@all << self
@@ -13,28 +13,27 @@ class Magazine
     @@all
   end
 
-  def contributors
-    Article.all.filter{|article|
+  def get_articles
+    Article.all.select{|article|
   article.magazine.name == @name}
-  .map{|article|article.author}.uniq
+  end
+
+  def contributors
+    get_articles.map{|article|article.author}.uniq
   end
 
   def self.find_by_name(name)
     Magazine.all.find{|magazine|
-  magazine.name == name}
+    magazine.name == name}
   end
 
   def article_titles
-    Article.all.select{|article|
-  article.magazine.name == @name}
-  .map{|article|article.title}
+    get_articles.map{|article|article.title}
   end
 
  def contributing_authors
   main_authors = []
-  Article.all.select{|article|
-  article.magazine.name == @name}
-  .map{|article|article.author}.tally.each{|key,value|value > 2 && (main_authors << key)}
+  get_articles.map{|article|article.author}.tally.each{|key,value|value > 2 && (main_authors << key)}
   main_authors
  end
 

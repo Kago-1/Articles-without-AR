@@ -19,7 +19,7 @@ class Author
   end
 
   def add_article(magazine,title)
-    Article.new(self,magazine,title)
+    Article.new(author:self,magazine:magazine,title:title)
   end
 
   def topic_areas
